@@ -349,7 +349,7 @@ func (kc *KubernetesCache) serviceTriggersRebuild(service *v1.Service) bool {
 			continue
 		}
 		if backend := ingress.Spec.DefaultBackend; backend != nil {
-			if backend.Service.Name == service.Name {
+			if backend.Service != nil && backend.Service.Name == service.Name {
 				return true
 			}
 		}
@@ -360,7 +360,7 @@ func (kc *KubernetesCache) serviceTriggersRebuild(service *v1.Service) bool {
 				continue
 			}
 			for _, path := range http.Paths {
-				if path.Backend.Service.Name == service.Name {
+				if path.Backend.Service != nil && path.Backend.Service.Name == service.Name {
 					return true
 				}
 			}
